@@ -35,11 +35,14 @@ function clearCountryInfo() {
 
 function showCountryData(countries) {
   if (countries.length >= 10) {
+    inputElement.style.borderColor = '#26c0d3';
+    inputElement.style.borderWidth = '5px';
     Notiflix.Notify.info(
       'Too many matches found. Please enter a more specific name.'
     );
   } else if (countries.length === 1) {
-    inputElement.style.backgroundColor = '#a2f19b';
+    inputElement.style.borderColor = '#a2f19b';
+    inputElement.style.borderWidth = '5px';
     makeMarkupCountriesList(countries);
     makeMarkupCountryInfo(countries);
   } else {
@@ -49,6 +52,9 @@ function showCountryData(countries) {
 }
 
 function errorCountryData() {
+  inputElement.style.borderColor = 'red';
+  inputElement.style.borderWidth = '5px';
+  inputElement.style.color = 'red';
   clearCountryInfo();
   clearCountryList();
   Notiflix.Notify.failure('Oops, there is no country with that name');
