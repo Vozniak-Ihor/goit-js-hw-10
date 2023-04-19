@@ -1,96 +1,82 @@
 import './css/styles.css';
 import { fetchCountries } from './js/fetchCountries';
-var debounce = require('lodash.debounce');
+import debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 
-const DEBOUNCE_DELAY = 600;
+const DEBOUNCE_DELAY = 300;
 
-const inputEl = document.querySelector('#search-box');
-const countryListEl = document.querySelector('.country-list');
-const countryInfoEl = document.querySelector('.country-info');
-inputEl.addEventListener('input', debounce(OnInputEl, DEBOUNCE_DELAY));
+const inputElement = document.querySelector('#search-box');
+const countryListElement = document.querySelector('.country-list');
+const countryInfoElement = document.querySelector('.country-info');
 
-const classForNameOneCountry = 'titleForOneCountry';
+inputElement.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
-function OnInputEl(e) {
-  valueOnInputEl = e.target.value.trim();
-  console.log(valueOnInputEl);
-  if (valueOnInputEl === '') {
-    clierCountryListEl();
-    clierCountryInfoEl();
+function onInput(event) {
+  const searchValue = event.target.value.trim();
+
+  if (searchValue === '') {
+    clearCountryList();
+    clearCountryInfo();
     return;
   }
-  return fetchCountries(valueOnInputEl)
+
+  fetchCountries(searchValue)
     .then(countries => showCountryData(countries))
-    .catch(eror => errorCountryData());
+    .catch(error => errorCountryData());
 }
 
-function clierCountryListEl() {
-  countryListEl.innerHTML = '';
+function clearCountryList() {
+  countryListElement.innerHTML = '';
 }
 
-function clierCountryInfoEl() {
-  countryInfoEl.innerHTML = '';
+function clearCountryInfo() {
+  countryInfoElement.innerHTML = '';
 }
 
 function showCountryData(countries) {
   if (countries.length >= 10) {
-    // inputEl.style.backgroundColor = 'rgba(10, 208, 238, 0.2)';
     Notiflix.Notify.info(
       'Too many matches found. Please enter a more specific name.'
     );
-  } else if (arreyOfCountries.length === 1) {
-    inputEl.style.backgroundColor = '#a2f19b';
-    makeMarkupCountriesList(arreyOfCountries, className);
-    makeMarkupCountryInfo(arreyOfCountries);
-  } else if (arreyOfCountries.length >= 2 && arreyOfCountries.length < 10) {
-    makeMarkupCountriesList(arreyOfCountries);
-    inputEl.style.backgroundColor = '#dceb5c';
-    countryInfo.innerHTML = '';
+  } else if (countries.length === 1) {
+    inputElement.style.backgroundColor = '#a2f19b';
+    makeMarkupCountriesList(countries);
+    makeMarkupCountryInfo(countries);
+  } else {
+    makeMarkupCountriesList(countries);
+    clearCountryInfo();
   }
 }
 
 function errorCountryData() {
-  clierCountryInfoEl();
-  clierCountryListEl();
-  // inputEl.style.borderColor = 'red';
-  // inputEl.style.color = 'red';
+  clearCountryInfo();
+  clearCountryList();
   Notiflix.Notify.failure('Oops, there is no country with that name');
 }
 
-function makeMarkupCountriesList(arreyOfCountries, classForNameOneCountry) {
-  let markupCountiesList = '';
-  markupCountiesList = arreyOfCountries.reduce(
-    (acc, { flags: { svg }, name: { common } }) => {
-      acc += `<li>
-          <img src="${svg}" width="40" height="25">
-          <p class=${
-            classForNameOneCountry
-              ? classForNameOneCountry
-              : 'classForNameAllCountries'
-          }>${common}</li>`;
-      return acc;
-    },
-    ''
-  );
+function makeMarkupCountriesList(countries) {
+  const markupCountriesList = countries
+    .map(({ flags: { svg }, name: { common } }) => {
+      return `
+      <li>
+        <img src="${svg}" width="40" height="25">
+        <p>${common}</p>
+      </li>
+    `;
+    })
+    .join('');
 
-  countryListEl.innerHTML = markupCountiesList;
+  countryListElement.innerHTML = markupCountriesList;
 }
 
-function makeMarkupCountryInfo(arreyOfCountries) {
-  let markupCountryInfo = '';
-  markupCountryInfo = arreyOfCountries.reduce(
-    (acc, { capital, population, languages }) => {
-      acc += `
-          <p><span class="title">Capital:</span> ${capital}</p>
-          <p><span class="title">Population:</span> ${population}</p>
-          <p><span class="title">Languages:</span> ${Object.values(
-            languages
-          ).join(',')}</p>
-          `;
-      return acc;
-    },
-    ''
-  );
-  countryInfo.innerHTML = markupCountryInfo;
+function makeMarkupCountryInfo(countries) {
+  const { capital, population, languages } = countries[0];
+  const markupCountryInfo = `
+    <p><span class="title">Capital:</span> ${capital}</p>
+    <p><span class="title">Population:</span> ${population}</p>
+    <p><span class="title">Languages:</span> ${Object.values(languages).join(
+      ', '
+    )}</p>`;
+  countryInfoElement.innerHTML = markupCountryInfo;
+  console.log(Object.values);
 }
