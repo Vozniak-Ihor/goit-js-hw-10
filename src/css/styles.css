@@ -22,3 +22,9 @@ body {
 :focus {
   outline: none;
 }
+
+.all-country-list{
+  list-style: none;
+column-count: 16;
+  column-gap: 10px;
+}

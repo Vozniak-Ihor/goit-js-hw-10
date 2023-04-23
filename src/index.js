@@ -7,6 +7,7 @@ const DEBOUNCE_DELAY = 300;
 
 const inputElement = document.querySelector('#search-box');
 const countryListElement = document.querySelector('.country-list');
+const allCountryListElement = document.querySelector('.all-country-list');
 const countryInfoElement = document.querySelector('.country-info');
 
 inputElement.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
@@ -37,6 +38,7 @@ function showCountryData(countries) {
   if (countries.length >= 10) {
     inputElement.style.borderColor = '#26c0d3';
     inputElement.style.borderWidth = '5px';
+    makeMarkupCountriesAllList(countries);
     Notiflix.Notify.info(
       'Too many matches found. Please enter a more specific name.'
     );
@@ -47,6 +49,7 @@ function showCountryData(countries) {
     makeMarkupCountryInfo(countries);
   } else {
     makeMarkupCountriesList(countries);
+    allCountryListElement.innerHTML = '';
     clearCountryInfo();
   }
 }
@@ -73,6 +76,19 @@ function makeMarkupCountriesList(countries) {
     .join('');
 
   countryListElement.innerHTML = markupCountriesList;
+}
+function makeMarkupCountriesAllList(countries) {
+  const markupCountriesList = countries
+    .map(({ flags: { svg } }) => {
+      return `
+      <li>
+        <img src="${svg}" width="40" height="25">
+      </li>
+    `;
+    })
+    .join('');
+
+  allCountryListElement.innerHTML = markupCountriesList;
 }
 
 function makeMarkupCountryInfo(countries) {
