@@ -1,30 +1,93 @@
-* {
-  box-sizing: border-box;
-}
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #fafafa;
-  color: #212121;
-  line-height: 1.5;
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #fafafa;
+    color: #212121;
+    line-height: 1.5;
+  font-family: Arial, sans-serif;
 }
 
 #search-box {
-  font: inherit;
-  padding: 8px;
-  max-width: 320px;
-  margin-bottom: 16px;
+  display: block;
+  margin: 20px auto;
+  padding: 10px;
+  font-size: 18px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  width: 80%;
+  max-width: 500px;
 }
 
-:focus {
+#search-box:focus {
   outline: none;
+  border-color: #26c0d3;
+  box-shadow: 2px 2px 5px rgba(38, 192, 211, 0.3);
 }
 
-.all-country-list{
+.country-list {
   list-style: none;
-column-count: 16;
-  column-gap: 10px;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.country-list li {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.country-list li:hover {
+  background-color: #ddd;
+}
+
+.country-list li img {
+  margin-right: 10px;
+}
+
+.all-country-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.all-country-list li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+}
+
+.all-country-list li img {
+  max-width: 100%;
+}
+
+.country-info {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+}
+
+.country-info p {
+  margin: 5px 0;
+}
+
+.title {
+  font-weight: bold;
+  margin-right: 5px;
 }
